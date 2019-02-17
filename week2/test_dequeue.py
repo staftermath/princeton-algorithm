@@ -1,5 +1,6 @@
 import unittest
-from week2.dequeue import Deque
+import random
+from week2.dequeue import Deque, RandomDeque
 
 
 class TestDeque(unittest.TestCase):
@@ -82,3 +83,13 @@ class TestDeque(unittest.TestCase):
             result.append(x)
 
         self.assertListEqual(result, [100, 200, 300, 400])
+
+
+class TestRandomDeque(unittest.TestCase):
+    def test_sample(self):
+        random.seed(123)
+        random_deque = RandomDeque(list(range(100)))
+        result = random_deque.sample()
+        self.assertEqual(result, 6)
+        result = random_deque.sample()
+        self.assertEqual(result, 34)

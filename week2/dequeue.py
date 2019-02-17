@@ -17,7 +17,7 @@ class Deque {
    __iter__()                         // return an iterator
 }
 """
-
+import random
 
 class Deque(object):
     def __init__(self, x=None):
@@ -87,3 +87,10 @@ class Deque(object):
 
     def __iter__(self):
         return self._array[self._begin:self._end].__iter__()
+
+class RandomDeque(Deque):
+    def __init__(self, x=None):
+        super(RandomDeque, self).__init__(x=x)
+    
+    def sample(self):
+        return random.choice(self._array[self._begin:self._end])
