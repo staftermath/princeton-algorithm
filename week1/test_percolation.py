@@ -1,5 +1,5 @@
 import unittest
-from percolation import UnionFind, Percolation, MonteCarlo
+from week1.percolation import UnionFind, Percolation, MonteCarlo
 
 class TestUnionFind(unittest.TestCase):
     def test_init(self):
