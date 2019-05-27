@@ -1,5 +1,5 @@
 import pytest
-from part2_week2.mst.mst import Edge
+from part2_week2.mst import Edge
 
 
 @pytest.mark.parametrize("test_edges, cmp_edges",
@@ -34,7 +34,7 @@ def test_edge_method():
         sample_edge.other(3)
 
 
-edges = [Edge(0, 7, 0.16),
+edges = [(0, 7, ),
          Edge(2, 3, 0.17),
          Edge(1, 7, 0.19),
          Edge(0, 2, 0.26),
@@ -55,7 +55,7 @@ n_v = 8
 
 @pytest.fixture()
 def ewg():
-    from part2_week2.mst.mst import EdgeWeightedGraph, MST
+    from part2_week2.mst import EdgeWeightedGraph
     ewg = EdgeWeightedGraph(n_v)
     for e in edges:
         ewg.addEdge(e)
@@ -69,7 +69,7 @@ def test_edge_weighted_graph(ewg):
 
 
 def test_mst(ewg):
-    from part2_week2.mst.mst import MST
+    from part2_week2.mst import MST
     mst = MST(ewg)
 
     assert len(mst.edges) == 7
@@ -77,7 +77,8 @@ def test_mst(ewg):
 
 
 def test_prim_mst(ewg):
-    from part2_week2.mst.mst import PrimMST
+    from part2_week2.mst import PrimMST
     prim_mst = PrimMST(ewg)
     assert len(prim_mst.edges) == 7
     assert prim_mst.weight() == (0.16+0.17+0.19+0.26+0.28+0.35+0.40)
+
