@@ -86,29 +86,33 @@ def test_numberOfSelfLoops(graph):
     assert Graph.numberOfSelfLoops(graph) == 2
 
 
-@pytest.fixture()
-def digraph_edges():
-    return [(0, 1), (0, 2), (1, 2), (3, 4), (2, 4), (4, 1)]
+digraph_edges = [(0, 1), (0, 2), (0, 5), (6, 0), (5, 2), (3, 2), (3, 5), (3, 6), (3, 4), (6, 4), (1, 4)]
 
 
 @pytest.fixture()
-def digraph(digraph_edges):
+def digraph():
     from part2_week1.graph import Digraph
-    graph = Digraph(5)
+    graph = Digraph(7)
     for v, w in digraph_edges:
         graph.addEdge(v, w)
     return graph
 
 
 def test_digraph_add_edges(digraph):
-    assert digraph.V == 5
-    assert digraph.E == 6
+    assert digraph.V == 7
+    assert digraph.E == len(digraph_edges)
 
 
 def test_digraph_adj(digraph):
-    assert sorted(digraph.adj(0)) == [1, 2]
-    assert sorted(digraph.adj(4)) == [1]
-    assert sorted(digraph.adj(2)) == [4]
+    assert sorted(digraph.adj(0)) == [1, 2, 5]
+    assert sorted(digraph.adj(4)) == []
+    assert sorted(digraph.adj(2)) == []
 
     with pytest.raises(ValueError):
-        digraph.adj(5)
+        digraph.adj(9)
+
+
+def test_depthfirstorder(digraph):
+    from part2_week1.graph import DepthFirstOrder
+    depth_first_order = DepthFirstOrder(digraph)
+    assert [4, 1, 2, 5, 0, 6, 3] == list(iter(depth_first_order.reversePost()))

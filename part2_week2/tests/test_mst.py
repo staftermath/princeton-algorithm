@@ -34,7 +34,7 @@ def test_edge_method():
         sample_edge.other(3)
 
 
-edges = [(0, 7, ),
+edges = [Edge(0, 7, 0.16),
          Edge(2, 3, 0.17),
          Edge(1, 7, 0.19),
          Edge(0, 2, 0.26),
@@ -63,8 +63,8 @@ def ewg():
 
 
 def test_edge_weighted_graph(ewg):
-    assert ewg.V() == n_v
-    assert ewg.E() == 16
+    assert ewg.V == n_v
+    assert ewg.E == 16
     assert len(ewg.adj(0)) == 4
 
 

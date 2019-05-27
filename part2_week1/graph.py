@@ -88,3 +88,39 @@ class Digraph(Graph):
         if w not in self._adj[v]:
             self._e += 1
             self._adj[v].add(w)
+
+
+class DepthFirstOrder(object):
+    """Impletment Depth-first order (Topological Sorting)"""
+    def __init__(self, G):
+        """
+
+        Args:
+            G (Digraph):
+        """
+        from week2.dequeue import Deque
+        import numpy as np
+        self._reversePost = Deque()
+        self._visited = np.repeat(False, G.V)
+        for i in range(G.V):
+            if not self._visited[i]:
+                self.dfs(G, i)
+
+    def dfs(self, G, v):
+        """
+
+        Args:
+            G (Digraph):
+            v (int):
+
+        Returns:
+            None
+        """
+        self._visited[v] = True
+        for w in G.adj(v):
+            if not self._visited[w]:
+                self.dfs(G, w)
+        self._reversePost.add_last(v)
+
+    def reversePost(self):
+        return self._reversePost
