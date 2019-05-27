@@ -1,0 +1,8 @@
+0,noun0,hello word
+1,noun1 noun1_dup1,hellow world
+2,noun2,no comment
+3,noun3 noun3_dup1 noun3_dup2 noun3_dup3,a lot of dup
+4,noun4,nodup
+5,noun5,nodup
+6,noun6,nodup
+7,entity,root of DAG

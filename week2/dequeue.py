@@ -19,6 +19,7 @@ class Deque {
 """
 import random
 
+
 class Deque(object):
     def __init__(self, x=None):
         self._size = 0
@@ -31,6 +32,12 @@ class Deque(object):
 
     def is_empty(self):
         return self._size == 0
+
+    def first(self):
+        return self._array[self._begin]
+
+    def last(self):
+        return self._array[self._end-1]
 
     @property
     def size(self):
@@ -87,6 +94,7 @@ class Deque(object):
 
     def __iter__(self):
         return self._array[self._begin:self._end].__iter__()
+
 
 class RandomDeque(Deque):
     def __init__(self, x=None):

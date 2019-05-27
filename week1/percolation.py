@@ -5,6 +5,7 @@ import random
 import sys
 from itertools import product
 
+
 class UnionFind(object):
     def __init__(self, n):
         self._index = list(range(n))

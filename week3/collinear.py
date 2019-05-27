@@ -32,7 +32,7 @@ class Point(object):
 
     def slope_to(self, p):
         if isinstance(p, Point):
-            return Slope(p.x-self.x, p.y-self.y)
+            return Slope(self, p)
         else:
             raise TypeError("p is not Point")
     
@@ -42,11 +42,21 @@ class Point(object):
         else:
             return value.x == self.x and value.y == self.y
 
+    def __hash__(self):
+        return hash(str(self))
+
 
 class Slope(object):
     def __init__(self, a, b):
+        """
+
+        Args:
+            a (Point):
+            b (Point):
+        """
         self._a = a
         self._b = b
+        self._slope = None
         self._reduce()
     
     @property
@@ -57,20 +67,39 @@ class Slope(object):
     def b(self):
         return self._b
 
-    def _reduce(self):
-        slope_gcd = gcd(self.a, self.b)
-        if slope_gcd != 0:
-            self._a /= slope_gcd
-            self._b /= slope_gcd
-        
-        if self._a < 0:
-            self._a = -self._a
-            self._b = -self._b
+    @property
+    def dx(self):
+        return self._slope[0]
 
-    def __eq__(self, value):
-        if isinstance(value, Slope):
+    @property
+    def dy(self):
+        return self._slope[1]
+
+    def _reduce(self):
+        dx = self.a.x-self.b.x
+        dy = self.a.y-self.b.y
+        slope_gcd = gcd(dx, dy)
+        if slope_gcd != 0:
+            dx /= slope_gcd
+            dy /= slope_gcd
+        if dx < 0:
+            dx = -dx
+            dy = -dy
+        self._slope = (dx, dy)
+
+    def __eq__(self, other):
+        if isinstance(other, Slope):
             # TODO: fix integer overflow 
-            return (0 == self.a == self.b == value.a == value.b) or (self.a*value.b == self.b*value.a)
+            return self.dx == other.dx and self.dy == other.dy
+        else:
+            raise TypeError("value is not Slope")
+
+    def __lt__(self, other):
+        if isinstance(other, Slope):
+            if self.dy == 0 or other.dy == 0:
+                return self.dy < other.dy
+            else:
+                return self.dx/self.dy < other.dx/other.dy
         else:
             raise TypeError("value is not Slope")
 
@@ -93,6 +122,36 @@ class LineSegment(object):
         return " -> ".join([str(p) for p in self._points])
 
 
+class FastCollinearPoints(object):
+
+    def __init__(self, points):
+        self._numberOfSegments = 0
+        self._lineSegments = []
+        self._segments(points)
+
+    def _segments(self, points):
+        """The method segments() should include each maximal line segment containing 4 (or more) points exactly once.
+        For example, if 5 points appear on a line segment in the order p→q→r→s→t,
+        then do not include the subsegments p→s or q→t.
+        Args:
+            points (list): list of points
+
+        """
+        from itertools import chain
+        for i in range(len(points)-3):
+            slopes = [Slope(points[i], points[p]) for p in range(i, len(points))]
+            sorted(slopes)
+            num_slopes = len(slopes)
+            for i in range(num_slopes-2):
+                if slopes[i] == slopes[i+2]:
+                    line_segment = LineSegment()
+                    points_in_line = set(chain.from_iterable([[s.a, s.b] for s in slopes[i:(i+3)]]))
+                    for p in points_in_line:
+                        line_segment.add_point(p)
+                    self._lineSegments.append(line_segment)
+                    self._numberOfSegments += 1
+
+
 def load_file(input_file):
     with open(input_file, 'r') as f:
         line = int(next(f))
@@ -109,4 +168,3 @@ def load_file(input_file):
 if __name__ == "__main__":
     input_file = sys.argv[1]
     points = load_file(input_file)
-    
