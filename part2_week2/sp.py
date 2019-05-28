@@ -111,6 +111,7 @@ class DijkstraSP(SP):
     """Dijkstra Algorithm Using MinPQ (binary heap implementation)
     time: O(Elog(V))
     space: O(V)
+    restriction: no negative weights
     """
     def __init__(self, G, s):
         """
@@ -195,7 +196,11 @@ class DepthFirstOrderAcyclic(DepthFirstOrder):
 
 
 class AcyclicSP(object):
-    """Implement Acyclic Shortest Path based on Topological sorting"""
+    """Implement Acyclic Shortest Path based on Topological sorting
+    time: O(E+V)
+    space: O(V)
+    restriction: no directed cycles
+    """
     def __init__(self, G, s):
         """
 
