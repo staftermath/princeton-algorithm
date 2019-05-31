@@ -4,6 +4,8 @@ This file implements classes needed for maxflow mincut algorithms
 from collections import defaultdict
 import numpy as np
 
+from week2.dequeue import Deque
+
 
 class FlowEdge(object):
     """
@@ -73,6 +75,9 @@ class FlowEdge(object):
             self._flow += delta
         else:
             raise RuntimeError("Illegal Endpoint")
+
+    def __repr__(self):
+        return str(self)
 
     def __str__(self):
         return "{} --({}/{})--> {}".format(self.origin, self.flow, self.capacity, self.to)
@@ -146,6 +151,9 @@ class FordFulkerson(object):
         self._value = 0
         self._marked = [False]*G.V()
         self._edgesTo = [None]*G.V()
+        self._source = s
+        self._sink = t
+        self._v = G.V()
         while self.hasAugmentingPath(G, s, t):
             bottle = np.inf
             v = t
@@ -159,6 +167,12 @@ class FordFulkerson(object):
 
             self._value += bottle
 
+    def source(self):
+        return self._source
+
+    def sink(self):
+        return self._sink
+
     def hasAugmentingPath(self, G, s, t):
         """
 
@@ -170,7 +184,6 @@ class FordFulkerson(object):
         Returns:
             (bool)
         """
-        from week2.dequeue import Deque
         self._edgesTo = [None]*G.V()
         self._marked = [False]*G.V()
         queue = Deque()
@@ -192,3 +205,7 @@ class FordFulkerson(object):
 
     def inCut(self, v):
         return self._marked[v]
+
+    def min_cut(self):
+        assert not self._marked[self.sink()], "G is not a maxflow. Unable to run maxflow-mincut algorithm on a non maxflow"
+        return [idx for idx in range(self._v) if self.inCut(idx)]

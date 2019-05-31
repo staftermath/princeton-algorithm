@@ -2,13 +2,6 @@ import pytest
 from part2_week2.sp import DirectedEdge
 
 
-# @pytest.fixture()
-# def directed_edge():
-#     from part2_week2.sp import DirectedEdge
-#     de = DirectedEdge(1, 2, 0.5)
-#     return de
-
-
 def test_directed_weighted_edge_attributes():
     directed_edge = DirectedEdge(1, 2, 0.5)
     assert 1 == directed_edge.origin
