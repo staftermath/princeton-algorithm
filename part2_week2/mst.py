@@ -119,9 +119,11 @@ class EdgeWeightedGraph(object):
     def edges(self):
         return self._edges
 
+    @property
     def V(self):
         return self._v
 
+    @property
     def E(self):
         return self._e
 
@@ -138,7 +140,7 @@ class MST(object):
         """
         import heapq
         self._mst = []
-        self.uf = UnionFind(G.V())
+        self.uf = UnionFind(G.V)
         edges = G.edges()
         heapq.heapify(edges)
         for e in edges:
@@ -172,7 +174,7 @@ class PrimMST(object):
         heapq.heapify(edges)
         visited = set()
         v = 0
-        while len(self._mst) < G.V()-1:
+        while len(self._mst) < G.V-1:
             for e in G.adj(v):
                 v1 = e.either()
                 v2 = e.other(v1)
